@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Optional;
 
 @org.springframework.stereotype.Service
 public class Service {
@@ -33,5 +34,12 @@ public class Service {
 
     public List<LetterSummary> getAllLetters() {
         return repository.findAll();
+    }
+
+    public LetterSummary getLetterByID(Integer id) {
+        Optional<LetterSummary> myLetter = repository.findById(id);
+        if (myLetter.isPresent())
+            return myLetter.get();
+        throw new NullPointerException("Letter Not Found");
     }
 }

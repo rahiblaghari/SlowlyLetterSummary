@@ -1,6 +1,7 @@
 package app.Slowly.LetterArchive.Letter;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
@@ -56,12 +57,33 @@ public class LetterController {
         return service.getAllLetters();
     }
     // Update List of friends in a scheduled cron job every minute
-    @Scheduled(cron = "0/5 * * * * *")
+    @Scheduled(cron = "*/30 * * * * *")
     void UpdateFriendList ()
     {
         MyCurrentFriends=new ArrayList<String>();
         MyCurrentFriends=service.retrieveAllNames();
     }
+//    Patch API Endpoint to edit already inserted letter summaries by ID if need be
+    @RequestMapping(value="/UseID/{ID}", method=RequestMethod.PUT)
+    ResponseEntity<String> editLetter(
+            @PathVariable Integer ID,
+            @RequestBody String LetterSummary
+    )
+    {
+        LetterSummary letterToEdit = service.getLetterByID(ID);
+        letterToEdit.setLetterSummary(LetterSummary);
+        service.InsertLetter(letterToEdit);
+        return ResponseEntity.ok("Letter updated successfully");
+    }
+//    Get API Endpoint to retrieve by letter summary ID
+@RequestMapping(value="/UseID/{ID}", method=RequestMethod.GET)
+    LetterSummary getLetter (
+            @PathVariable Integer ID
+    )
+    {
+        return service.getLetterByID(ID);
+    }
+
     @RequestMapping(value = "/ResetFromBackup", method = RequestMethod.POST)
     void reset()
     {
