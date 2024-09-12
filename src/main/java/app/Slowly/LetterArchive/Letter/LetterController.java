@@ -1,10 +1,12 @@
 package app.Slowly.LetterArchive.Letter;
 
+import org.apache.tomcat.util.bcel.classfile.ClassFormatException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.InvalidClassException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +27,11 @@ public class LetterController {
             @RequestBody LetterSummary letterSummary
     )
     {
+        if(letterSummary.getLetterSummary().isEmpty()||letterSummary.getUserName().isEmpty())
+        {
+            throw new ClassFormatException("It is required that the UserName and Letter Summary be present");
+        }
+        letterSummary.setLetterId(null); //TODO: Test changes to ensure new ID can be insterted!
         service.InsertLetter(letterSummary);
     }
     // Get API endpoint to find Letter Summary from the same UserName
