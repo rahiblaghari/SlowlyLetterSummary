@@ -31,7 +31,7 @@ public class LetterController {
         {
             throw new ClassFormatException("It is required that the UserName and Letter Summary be present");
         }
-        letterSummary.setLetterId(null); //TODO: Test changes to ensure new ID can be insterted!
+        letterSummary.setLetterId(null);
         service.InsertLetter(letterSummary);
     }
     // Get API endpoint to find Letter Summary from the same UserName
