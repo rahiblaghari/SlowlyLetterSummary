@@ -1,6 +1,5 @@
 package app.Slowly.LetterArchive.Letter;
 
-import com.opencsv.bean.CsvBindByName;
 import jakarta.persistence.*;
 
 @Entity
